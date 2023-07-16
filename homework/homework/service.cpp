@@ -86,7 +86,9 @@ int isWin(int x, int y) {
 		if (count == 5)
 			return color;
 	}
+	// 若没有获胜,则交替颜色
 	flag = flag % 2 + 1;
+	++rounds;
 	return 0;
 }
 

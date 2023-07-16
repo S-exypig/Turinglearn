@@ -7,6 +7,7 @@ void menuView() {
 		进入设置: 敬请期待...
 		退出游戏: 调用exit(0);
 	*/
+	std::cout << "开始游戏咯!" << std::endl << std::endl;
 	int choice;
 	while (true)
 	{
@@ -55,6 +56,7 @@ void winView() {
 	返回值 : void
 */
 	gameView_ShowMap(); // 胜利前打印最后一次棋盘
+	std::cout << "在第 " << rounds << " 手时 " << std::endl;
 	if (flag == 1) {
 		std::cout << "黑棋胜利!" << std::endl;
 	}
@@ -90,9 +92,11 @@ void gameView() {
 		std::cout << "---------------------------------" << std::endl;
 		std::cout<< "第 " << rounds << " 手  "<<"当前为: "<< ((flag==1)?"黑":"白") << "棋" << std::endl;
 		gameView_ShowMap();
+		// 考虑可以将坐标的输入封装成函数
 		int x, y;
 		std::cout << "请输入落子坐标(以空格分隔):" << std::endl;
 		std::cin >> x >> y;
+		std::cin.ignore(10000, '\n'); // 实现输入缓冲区的清空，仅读取前两个数字
 		if (x < 0 || x>18 || y < 0 || y>18) {
 			std::cout << "坐标输入错误,请重新输入!" << std::endl;
 			continue;
@@ -108,6 +112,5 @@ void gameView() {
 			winView();
 			break;
 		}
-		++rounds;
 	}
 }
