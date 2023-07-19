@@ -109,3 +109,109 @@ void Tetris::draw() {
 	window->display(); // 显示
 }
 
+void Tetris::run() {
+	while (window->isOpen()) {
+		events();
+		//if (!gameover) {
+		//	changePosition();
+		//	setRotate();
+		//	moveToDown();
+		//	setScore();
+		//	resetValues();
+		//}
+		draw();
+	}
+}
+
+void Tetris::moveToDown() {
+	if (timercount > delay) { // 计时器大于延迟时间
+		for (std::size_t i{}; i < squares; ++i) { // 遍历方块
+			k[i] = z[i]; // 保存方块的位置
+			++z[i].y; // 方块下移
+		}
+		if (maxLimit()) {
+			for (std::size_t i{}; i < squares; ++i) {
+				area[k[i].y][k[i].x] = color; // 将方块的位置设置为方块的颜色
+			}
+			color = std::rand() % shapes + 1; // 随机生成方块颜色
+			std::uint32_t number = std::rand() % shapes; // 随机生成方块形状
+			for (std::size_t i{}; i < squares; ++i) {
+				z[i].x = forms[number][i] % 2; // 设置方块的位置
+				z[i].y = forms[number][i] / 2; // 设置方块的位置
+			}
+		}
+		timercount = 0; // 计时器归零
+	}
+}
+
+void Tetris::setRotate() { // 旋转
+	if (rotate) { // 旋转标志为真
+		Coords coords = z[1]; // 保存方块的位置
+		for (std::size_t i {}; i < squares; ++i) {
+			int x = z[i].y - coords.y; // 旋转
+			int y = z[i].x - coords.x;
+
+			z[i].x = coords.x - x;
+			z[i].y = coords.y + y;
+		}
+
+		if (maxLimit()) { // 边界检测
+			for (std::size_t i {}; i < squares; ++i) {
+				z[i] = k[i];
+			}
+		}
+	}
+}
+
+void Tetris::resetValues() { // 重置值
+	dirx = 0;
+	rotate = false;
+	delay = 0.3f;
+}
+
+void Tetris::changePosition() { // 改变位置
+	for (std::size_t i {}; i < squares; ++i) {
+		k[i] = z[i];
+		z[i].x += dirx;
+	}
+
+	if (maxLimit()) {
+		for (std::size_t i {}; i < squares; ++i) {
+			z[i] = k[i];
+		}
+	}
+}
+
+bool Tetris::maxLimit() { // 边界检测
+	for (std::size_t i {}; i < squares; ++i) {
+		if (z[i].x < 0 ||
+			z[i].x >= cols ||
+			z[i].y >= lines ||
+			area[z[i].y][z[i].x]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Tetris::setScore() { // 设置分数
+	std::uint32_t match = lines - 1;
+	for (std::size_t i = match; i >= 1; --i) {
+		std::uint32_t sum {};
+		for (std::size_t j {}; j < cols; ++j) {
+			if (area[i][j]) {
+				if (i == 1) {
+					gameover = true;
+				}
+				++sum;
+			}
+			area[match][j] = area[i][j];
+		}
+		if (sum < cols) {
+			--match;
+		}
+		else {
+			txtScore.setString("SCORE: " + std::to_string(++score));
+		}
+	}
+}
