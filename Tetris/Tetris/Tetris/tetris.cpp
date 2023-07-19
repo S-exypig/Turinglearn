@@ -61,3 +61,51 @@ Tetris::Tetris() { // 构造函数
 
 }
 
+void Tetris::events() {
+	float time = clock.getElapsedTime().asSeconds(); // 创建以来经过的时间，并将其转换为秒数
+	clock.restart(); // 重启时钟
+	timercount += time; // 计时器累加
+
+	auto e = std::make_shared<sf::Event>(); // 创建事件
+	while (window->pollEvent(*e)) {
+		if(e->type== sf::Event::Closed) // 关闭窗口
+			window->close();
+		if (e->type == sf::Event::KeyPressed) { // 按键事件
+			if (e->key.code == sf::Keyboard::Up) // 上键
+				rotate = true;
+			else if (e->key.code == sf::Keyboard::Right) // 右键
+				++dirx;
+			else if (e->key.code == sf::Keyboard::Left) // 左键
+				--dirx;
+		}
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		delay = 0.05f; // 按下下键，方块下落速度加快
+	}
+}
+
+void Tetris::draw() {
+	window->clear(sf::Color::Black); // 清屏
+	window->draw(*background); // 绘制背景
+	for (std::size_t i{}; i < lines; ++i) {
+		for (std::size_t j{}; j < cols; ++j) {
+			if (area[i][j] != 0) { // 棋盘上没有方块
+				sprite->setTextureRect(sf::IntRect(area[i][j] * 36, 0, 36, 36)); // 设置方块精灵的纹理矩形
+				sprite->setPosition(j * 36, i * 36); // 设置方块精灵的位置
+				window->draw(*sprite); // 绘制方块
+			}
+		}
+	}
+	for (std::size_t i{}; i < squares; ++i) {
+		sprite->setTextureRect(sf::IntRect(color * 36, 0, 36, 36)); // 设置方块精灵的纹理矩形
+		sprite->setPosition(z[i].x * 36, z[i].y * 36); // 设置方块精灵的位置
+		window->draw(*sprite); // 绘制方块
+	}
+
+	window->draw(txtScore);
+	if (gameover)
+		window->draw(txtGameOver);
+	window->display(); // 显示
+}
+
