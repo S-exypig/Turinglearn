@@ -112,13 +112,13 @@ void Tetris::draw() {
 void Tetris::run() {
 	while (window->isOpen()) {
 		events();
-		//if (!gameover) {
-		//	changePosition();
-		//	setRotate();
-		//	moveToDown();
-		//	setScore();
-		//	resetValues();
-		//}
+		if (!gameover) {
+			changePosition();
+			setRotate();
+			moveToDown();
+			setScore();
+			resetValues();
+		}
 		draw();
 	}
 }
@@ -129,7 +129,7 @@ void Tetris::moveToDown() {
 			k[i] = z[i]; // 保存方块的位置
 			++z[i].y; // 方块下移
 		}
-		if (maxLimit()) {
+		if (maxLimit()) { // 判断方块是否到达底部
 			for (std::size_t i{}; i < squares; ++i) {
 				area[k[i].y][k[i].x] = color; // 将方块的位置设置为方块的颜色
 			}

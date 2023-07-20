@@ -20,7 +20,7 @@ class Tetris
 
 	struct Coords{
 		std::uint32_t x, y;
-	}z[squares], k[squares]; // z表示当前方块的坐标，k表示下一个方块的坐标
+	}z[squares], k[squares]; // z表示下一方块的坐标，k表示当前方块的坐标
 
 	std::shared_ptr<sf::RenderWindow> window; // 游戏窗口
 	sf::Texture tiles, bg; // 方块纹理，背景纹理
