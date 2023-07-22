@@ -8,7 +8,7 @@ void init() {
 	/*
 	功能: 初始化游戏数据
 	将棋盘的值初始化为0
-	当前回合设为黑棋(flag设为1)
+	当前回合设为黑棋(flag设为0)
 	参数: void
 	返回值: void
 */
@@ -17,10 +17,9 @@ void init() {
 		for (int j = 0; j < 19; j++)
 			map[i][j] = 0;
 	}
-	// 初始化回合数
-	rounds = 1;
+
 	// 初始化当前回合为黑棋
-	flag = 1;
+	flag = 0;
 }
 
 
@@ -87,8 +86,7 @@ int isWin(int x, int y) {
 			return color;
 	}
 	// 若没有获胜,则交替颜色
-	flag = flag % 2 + 1;
-	++rounds;
+	++flag;
 	return 0;
 }
 
@@ -97,6 +95,7 @@ int playerMove(int x, int y) {
 	功能: 在指定位置落子
 	如果map[x][y]是空地 则修改map[x][y]的值:改为相应颜色(flag对应颜色)
 	否则不操作
+	黑1白2
 	参数:
 	x: 当前回合落子的x坐标
 	y: 当前回合落子的y坐标
@@ -107,6 +106,6 @@ int playerMove(int x, int y) {
 
 	if (map[x][y] != 0)
 		return 0;
-	map[x][y] = flag;
+	map[x][y] = flag%2+1;
 	return 1;
 }

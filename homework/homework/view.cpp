@@ -56,12 +56,12 @@ void winView() {
 	返回值 : void
 */
 	gameView_ShowMap(); // 胜利前打印最后一次棋盘
-	std::cout << "在第 " << rounds << " 手时 " << std::endl;
-	if (flag == 1) {
-		std::cout << "黑棋胜利!" << std::endl;
+	std::cout << "在第 " << flag+1 << " 手时 " << std::endl;
+	if (flag & 1) {
+		std::cout << "白棋胜利!" << std::endl;
 	}
 	else {
-		std::cout << "白棋胜利!" << std::endl;
+		std::cout << "黑棋胜利!" << std::endl;
 	}
 	std::cout << "按任意键回到主菜单..." << std::endl;
 	system("pause");
@@ -90,7 +90,7 @@ void gameView() {
 	while (true)
 	{
 		std::cout << "---------------------------------" << std::endl;
-		std::cout<< "第 " << rounds << " 手  "<<"当前为: "<< ((flag==1)?"黑":"白") << "棋" << std::endl;
+		std::cout<< "第 " <<flag+1 << " 手  "<<"当前为: "<< ((flag&1)?"白":"黑") << "棋" << std::endl;
 		gameView_ShowMap();
 		// 考虑可以将坐标的输入封装成函数
 		int x, y;

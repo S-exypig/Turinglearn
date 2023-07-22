@@ -17,7 +17,6 @@ extern int map[19][19];
 // 表示当前回合数 偶数表示黑棋落子 奇数表示白棋落子
 // 如: flag = 20 表示当前是第[20]次落子 由黑方落子
 extern int flag;
-extern int rounds;
 /*
 	功能: 初始化游戏数据
 	将棋盘的值初始化为0
